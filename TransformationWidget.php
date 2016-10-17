@@ -13,6 +13,7 @@ use yii\base\Widget;
 class TransformationWidget extends Widget
 {
     public $message;
+    public $_ob_message;
     public $class = '\suver\editor\TransformationMarkdown';
 
     public function init()
@@ -26,10 +27,10 @@ class TransformationWidget extends Widget
 
     public function run()
     {
-        if(empty($this->message)) {
-            $this->message = ob_get_clean();
+        if($this->message === null) {
+            $this->_ob_message = ob_get_clean();
         }
-        return $this->render($this->message);
+        return $this->render(empty($this->message) ? $this->_ob_message : $this->message);
     }
 
     public function render($string) {
