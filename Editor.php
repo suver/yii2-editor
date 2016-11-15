@@ -23,12 +23,16 @@ class Editor extends InputWidget
      * See https://github.com/NextStepWebs/simplemde-markdown-editor
      * @var array
      */
-    public $mdeOptions = [];
+    public $mdeOptions = [
+        'resize' =>  'vertical',
+    ];
     /**
      * ID of Textarea where editor will be placed
      * @var string
      */
     protected $id;
+
+    protected static $countEditors=1;
 
     /**
      * @inheritdoc
@@ -39,9 +43,9 @@ class Editor extends InputWidget
         if (empty($this->id)) {
             $this->id = $this->hasModel() ? Html::getInputId($this->model, $this->attribute) : $this->getId();
         }
-        if (empty($this->mdeOptions['element'])) {
-            $this->mdeOptions['element'] = new JsExpression('$("#' . $this->id . '")[0]');
-        }
+        //if (empty($this->mdeOptions['element'])) {
+            //$this->mdeOptions['element'] = new JsExpression('$("#' . $this->id . '")[0]');
+        //}
     }
 
     /**
@@ -49,9 +53,12 @@ class Editor extends InputWidget
      */
     public function run()
     {
+        static::$countEditors++;
         EditorAsset::register($this->view);
         $this->registerScripts();
         $this->options['id'] = $this->id;
+        $this->options['data']['provide'] = 'markdown';
+        $this->options['data']['provide-id'] = static::$countEditors;
         if ($this->hasModel()) {
             echo Html::activeTextArea($this->model, $this->attribute, $this->options);
         } else {
@@ -64,9 +71,11 @@ class Editor extends InputWidget
      */
     public function registerScripts()
     {
+        //$this->mdeOptions['element'] = new JsExpression("$('[data-editor-index=" . static::$countEditors . "]')[0]");
+        //$this->mdeOptions['forceSync'] = true;
         $jsonOptions = Json::encode($this->mdeOptions);
-        $varName = Inflector::classify('editor' . $this->id);
-        $script = "var {$varName} = new SimpleMDE(" . $jsonOptions . ");";
+        $varName = Inflector::classify('editor' . $this->id . '-' . static::$countEditors);
+        $script = "var {$varName} = $('[data-provide-id=" . static::$countEditors . "]').markdown({$jsonOptions})";
         $this->view->registerJs($script);
     }
 }

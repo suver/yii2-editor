@@ -16,10 +16,14 @@ class EditorAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/suver/yii2-editor/assets';
     public $js = [
-        'simplemde.min.js'
+        //'simplemde.min.js',
+        'markdown.js',
+        'to-markdown.js',
+        'bootstrap-markdown.js',
     ];
     public $css = [
-        'simplemde.min.css'
+        //'simplemde.min.css',
+        'bootstrap-markdown.min.css',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

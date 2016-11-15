@@ -30,10 +30,10 @@ class TransformationWidget extends Widget
         if($this->message === null) {
             $this->_ob_message = ob_get_clean();
         }
-        return $this->render(empty($this->message) ? $this->_ob_message : $this->message);
+        return $this->spell(empty($this->message) ? $this->_ob_message : $this->message);
     }
 
-    public function render($string) {
+    public function spell($string) {
         $object = new $this->class();
         return $object->transformation($string);
     }

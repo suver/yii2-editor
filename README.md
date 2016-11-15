@@ -46,6 +46,13 @@ View:
 <?php ActiveForm::end(); ?>
 ```
 
+
+```php
+
+ <?php echo \suver\editor\TransformationWidget::widget(['message' => $text]) ?>
+
+```
+
 Further Information
 -------------------
 Please, check the [simplemde-markdown-editor](https://github.com/NextStepWebs/simplemde-markdown-editor/) documentation for further information about its configuration options.
