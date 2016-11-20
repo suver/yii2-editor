@@ -9,6 +9,7 @@ namespace suver\editor;
 
 use suver\settings\Settings;
 use yii\bootstrap\Html;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
 
@@ -40,9 +41,13 @@ class HtmlEditor extends Html
         $options['class'] = isset($options['class']) ? : 'form-modern-control';
         $type = 'div';
 
+        $preHtml = '';
+        $afterHtml = '';
+
         switch($editorType) {
 
             case self::EDITOR_ALLOY:
+                $type = 'textarea';
                 \Yii::$app->view->registerJs("
                     suverYii2Editor.initAlloy('[data-modern-element-id={$options['data-modern-element-id']}]');
                 ");
@@ -71,6 +76,6 @@ class HtmlEditor extends Html
                 break;
         }
 
-        return static::tag($type, $value, $options);
+        return $preHtml . static::tag($type, $value, $options) . $afterHtml;
     }
 }
